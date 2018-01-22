@@ -59,7 +59,7 @@ ls
 	> auto/  config/  live-cache.tar.bz2  Makefile  persistence.conf  src/  version
 ```
 
-#### Debian packages
+#### General packages
 
 ```
 sudo apt-get update -y
@@ -110,3 +110,24 @@ sudo apt-get install -y doxygen
 sudo apt-get install -y autoconf 
 sudo apt-get install -y libssl-dev
 ```
+
+#### Install packages for gcc4.8 
+
+> 9010-live-UG, page11
+
+```
+sudo apt-get install -y gcc-4.8-multilib
+sudo apt-get install -y g++-4.8-multilib
+	> Change gcc from 4.9 to 4.8
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 30
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 40
+sudo update-alternatives --config gcc 
+```
+
+>  Selection    Path              Priority   Status
+------------------------------------------------------------
+* 0            /usr/bin/gcc-4.9   40        auto mode
+  1            /usr/bin/gcc-4.8   30        manual mode
+  2            /usr/bin/gcc-4.9   40        manual mode
+==> type selection number: 1
+
