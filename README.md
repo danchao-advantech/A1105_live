@@ -39,3 +39,19 @@ uname -r
 cat /etc/*-release
 	> PRETTY_NAME="Debian GNU/Linux 8 (jessie)"
 ```
+
+##### Install esp-9010 basic
+```
+mkdir $HOME/live-image
+```
+Please copy "esp-9010_lmp_esw_v00_06.src.tar.bz2" to $HOME directory by winSCP or USB drive.
+```
+mv esp-9010_lmp_esw_v00_06.src.tar.bz2 $HOME/live-image
+cd $HOME/live-image
+tar xf esp-9010_lmp_esw_v00_06.src.tar.bz2
+mv  esp-9010_lmp_esw_v00_06  esp-9010
+mv esp-9010_lmp_esw_v00_06.src.tar.bz2 $HOME
+cd $HOME/live-image/esp-9010
+ls
+	> auto/  config/  live-cache.tar.bz2  Makefile  persistence.conf  src/  version
+```
