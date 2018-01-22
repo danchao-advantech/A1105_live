@@ -125,9 +125,10 @@ sudo update-alternatives --config gcc
 ```
 
 >  Selection    Path              Priority   Status
-------------------------------------------------------------
-* 0            /usr/bin/gcc-4.9   40        auto mode
-  1            /usr/bin/gcc-4.8   30        manual mode
-  2            /usr/bin/gcc-4.9   40        manual mode
-==> type selection number: 1
+> ------------------------------------------------------------
+> * 0            /usr/bin/gcc-4.9   40        auto mode
+>   1            /usr/bin/gcc-4.8   30        manual mode
+>   2            /usr/bin/gcc-4.9   40        manual mode
+> ==> type selection number: 1
+
 
