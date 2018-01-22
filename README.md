@@ -137,15 +137,25 @@ sudo update-pciids
 sudo update-usbids
 ```
 
-#### Modify script for live build
+Modify script for live build
 
 > 9010-live-UG, page15
 
 ```
 sudo nano /usr/lib/live/build/binary_hdd
-	> #SEARCH "if=chroot/usr/lib"
+	#SEARCH "if=chroot/usr/lib"
 	- dd if=chroot/usr/lib/${_BOOTLOADER}/mbr.bin of=${FREELO} bs=440 count=1 
 	+ dd if=chroot/usr/lib/SYSLINUX/mbr.bin of=${FREELO} bs=440 count=1 
-	> #SEARCH "umount chroot/binary.tmp"
+	#SEARCH "umount chroot/binary.tmp"
 	+ sync; sync; sync; sync; sync
 	  umount chroot/binary.tmp 
+```
+
+Navigate all available packages first by executing “apt-cache dumpavail” in the host system. 
+
+> 9010-live-UG, page5
+
+```
+apt-cache dumpavail
+```
+
