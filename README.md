@@ -8,7 +8,7 @@ Please refer to [ESP-9010 Debian Live System Building Environment Guide v0.1.pdf
 ### Prerequisites
 
 * [ESP-9010 Debian Live System Building Environment Guide v0.1.pdf](https://github.com/danchao-advantech/A1105_live/blob/master/ESP-9010%20Debian%20Live%20System%20Building%20Environment%20Guide%20v0.1.pdf) (Abbreviations: "*9010-live-UG*")
-* esp-9010_lmp_esw_v00_06b.src.tar.bz2
+* esp-9010_lmp_esw_v00_06.src.tar.bz2
 * [install_D8.sh](https://github.com/danchao-advantech/A1105_live/blob/master/install_D8.sh)
 
 ### Installing
@@ -137,5 +137,15 @@ sudo update-pciids
 sudo update-usbids
 ```
 
+#### Modify script for live build
 
+> 9010-live-UG, page15
 
+```
+sudo nano /usr/lib/live/build/binary_hdd
+	> #SEARCH "if=chroot/usr/lib"
+	- dd if=chroot/usr/lib/${_BOOTLOADER}/mbr.bin of=${FREELO} bs=440 count=1 
+	+ dd if=chroot/usr/lib/SYSLINUX/mbr.bin of=${FREELO} bs=440 count=1 
+	> #SEARCH "umount chroot/binary.tmp"
+	+ sync; sync; sync; sync; sync
+	  umount chroot/binary.tmp 
