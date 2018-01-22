@@ -122,13 +122,20 @@ sudo apt-get install -y g++-4.8-multilib
 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 30
 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 40
 sudo update-alternatives --config gcc 
+	> type selection change to "1"
 ```
 
->  Selection    Path              Priority   Status
-> ------------------------------------------------------------
-> * 0            /usr/bin/gcc-4.9   40        auto mode
->   1            /usr/bin/gcc-4.8   30        manual mode
->   2            /usr/bin/gcc-4.9   40        manual mode
-> ==> type selection number: 1
+#### Remove unused/out-of-date packages 
+
+> 9010-live-UG, page11
+
+```
+sudo apt-get autoclean
+sudo apt-get autoremove 
+dpkg --get-selections | grep linux
+sudo update-pciids
+sudo update-usbids
+```
+
 
 
