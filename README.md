@@ -3,7 +3,7 @@
 ## Getting Started
 
 These instructions will show you how to build a A1105 live image in Debian 8.1 (jessie) quickly.
-Please refer to "***ESP-9010 Debian Live System Building Environment Guide v0.1.pdf***" for other detail.
+Please refer to [ESP-9010 Debian Live System Building Environment Guide v0.1.pdf](https://github.com/danchao-advantech/A1105_live/blob/master/ESP-9010%20Debian%20Live%20System%20Building%20Environment%20Guide%20v0.1.pdf) for other detail.
 
 ### Prerequisites
 
