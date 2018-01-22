@@ -30,3 +30,12 @@ visudo
 	> user	ALL=(root) NOPASSWD:ALL
 chmod u-w /etc/sudoers
 ```
+#### Login debian 8.1 with user
+
+```
+chmod 666 .Xauthority
+uname -r
+	> 3.16.0-4-amd64
+cat /etc/*-release
+	> PRETTY_NAME="Debian GNU/Linux 8 (jessie)"
+```
