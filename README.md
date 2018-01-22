@@ -167,7 +167,6 @@ cp config $HOME/live-image/esp-9010/auto
 
 ### live-build
 
-> Build Firmware Image 
 > 9010-live-UG, page6
 
 Generate LMP firmware image from scratch:
@@ -188,30 +187,6 @@ live image generated in $HOME/live-image/esp-9010 directory names "live-image-am
 cd $HOME/live-image/esp-9010
 ls -al
 ```
-
-total 1207156
-drwxr-xr-x 10 swae swae      4096 Jan 22 11:33 .
-drwxr-xr-x  3 swae swae      4096 Jan 19 17:12 ..
-drwxr-xr-x  2 swae swae      4096 Jan 22 11:24 auto
-drwxr-xr-x  5 root root      4096 Jan 22 11:32 binary
-drwxr-xr-x  2 swae swae      4096 Jan 22 11:33 .build
--rw-r--r--  1 root root    258330 Jan 22 11:33 build.log
-drwxr-xr-x  7 root root      4096 Jan 22 11:27 cache
-drwxr-xr-x 23 root root      4096 Jan 22 11:33 chroot
--rw-r--r--  1 root root   2039806 Jan 22 11:30 chroot.files
--rw-r--r--  1 root root     12131 Jan 22 11:29 chroot.packages.install
--rw-r--r--  1 root root     12131 Jan 22 11:30 chroot.packages.live
-drwxr-xr-x 18 swae swae      4096 Jan 22 11:25 config
--rw-r--r--  1 swae swae 323043137 Oct 27  2016 live-cache.tar.bz2
--rw-r--r--  1 root root 934281216 Jan 22 11:33 live-image-amd64
--rw-r--r--  1 root root       486 Jan 22 11:32 live-image-amd64.contents
--rw-r--r--  1 root root   2039806 Jan 22 11:32 live-image-amd64.files
--rw-r--r--  1 root root     12131 Jan 22 11:32 live-image-amd64.packages
-drwxr-xr-x  3 swae swae      4096 Jan 22 11:25 local
--rw-r--r--  1 swae swae      6383 Oct 27  2016 Makefile
--rw-r--r--  1 swae swae        55 Oct 27  2016 persistence.conf
-drwxr-xr-x 11 swae swae      4096 Oct 27  2016 src
--rw-r--r--  1 swae swae         4 Oct 27  2016 version
 
 Rename live-image-amd64 to *A1105_lmp_esw_v00_0X.img*
 
