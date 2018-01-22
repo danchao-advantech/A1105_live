@@ -26,7 +26,7 @@ In Debian 8.1
 apt-get install sudo
 chmod u+w /etc/sudoers
 visudo
-	> # add "user" to root privilege
+	> #add "user" to root privilege
 	> user	ALL=(root) NOPASSWD:ALL
 chmod u-w /etc/sudoers
 logout
@@ -88,3 +88,25 @@ sudo nano /etc/apt/sources.list
 	+ deb-src http://security.debian.org/ jessie/updates main
 sudo apt-get update
 ```	
+
+#### Install packages for live-build
+
+> 9010-live-UG, page10
+
+```
+sudo apt-get install -y build-essential linux-headers-`uname -r`
+sudo apt-get build-dep -y linux
+sudo apt-get install -y live-build live-boot live-config
+sudo apt-get install -y libncurses5-dev
+sudo apt-get install -y libc6-dev-i386
+sudo apt-get install -y fakeroot kernel-package
+sudo apt-get install -y iconx
+sudo apt-get install -y noweb 
+sudo apt-get install -y nowebm 
+sudo apt-get install -y usbutils
+sudo apt-get install -y zlib1g-dev libftdi-dev libusb-dev libftdi1 libpci-dev
+sudo apt-get install -y ecryptfs-utils
+sudo apt-get install -y doxygen 
+sudo apt-get install -y autoconf 
+sudo apt-get install -y libssl-dev
+```
