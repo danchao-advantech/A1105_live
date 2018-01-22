@@ -196,3 +196,9 @@ mv live-image-amd64 A1105_lmp_esw_v00_0X.img
 
 Finally, build a live USB drive by "A1105_lmp_esw_v00_0X.img" and "install_D8.sh"!
 
+```
+chmod 777 install_D8.sh
+install_D8.sh -f A1105_lmp_esw_v00_0X.img -d /dev/sdf
+```
+
+### done!
