@@ -1,0 +1,6 @@
+#!/bin/sh
+
+lb config noauto \
+	--architectures amd64 \
+	--bootappend-live "boot=live components live-getty persistence noeject nopat ip=frommedia console=ttyS1,115200n81i acpi_enforce_resources=lax pcie_aspm=off quiet" \
+	"${@}"
