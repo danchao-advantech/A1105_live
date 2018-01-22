@@ -29,7 +29,9 @@ visudo
 	> # add "user" to root privilege
 	> user	ALL=(root) NOPASSWD:ALL
 chmod u-w /etc/sudoers
+logout
 ```
+
 #### Login debian 8.1 with user
 
 ```
@@ -40,7 +42,7 @@ cat /etc/*-release
 	> PRETTY_NAME="Debian GNU/Linux 8 (jessie)"
 ```
 
-##### Install esp-9010 basic
+#### Install esp-9010 packages
 ```
 mkdir $HOME/live-image
 ```
