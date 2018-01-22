@@ -165,7 +165,7 @@ Copy [config](https://github.com/danchao-advantech/A1105_live/blob/master/config
 cp config $HOME/live-image/esp-9010/auto
 ```
 
-#### live-build
+### live-build
 
 > Build Firmware Image 
 > 9010-live-UG, page6
