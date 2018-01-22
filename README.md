@@ -20,7 +20,7 @@ In Debian 8.1
 - Login:    root / user
 - password: (...)
 
-#### Login debian 8.1 with root
+Login debian 8.1 with root
 
 ```
 apt-get install sudo
@@ -32,7 +32,7 @@ chmod u-w /etc/sudoers
 logout
 ```
 
-#### Login debian 8.1 with user
+Login debian 8.1 with user
 
 ```
 chmod 666 .Xauthority
@@ -42,7 +42,7 @@ cat /etc/*-release
 	> PRETTY_NAME="Debian GNU/Linux 8 (jessie)"
 ```
 
-#### Prepare for 9010 image
+Prepare for 9010 image
 
 ```
 mkdir $HOME/live-image
@@ -59,7 +59,7 @@ ls
 	> auto/  config/  live-cache.tar.bz2  Makefile  persistence.conf  src/  version
 ```
 
-#### General packages
+General packages
 
 ```
 sudo apt-get update -y
@@ -67,7 +67,7 @@ sudo apt-get install -y debootstrap syslinux isolinux squashfs-tools
 sudo apt-get install -y genisoimage memtest86+ rsync nano vim
 ```
 
-#### Update source.list
+Update source.list
 
 > 9010-live-UG, page10
 
@@ -89,7 +89,7 @@ sudo nano /etc/apt/sources.list
 sudo apt-get update
 ```	
 
-#### Install packages for live-build
+Install packages for live-build
 
 > 9010-live-UG, page10
 
