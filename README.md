@@ -13,7 +13,7 @@ Please refer to [ESP-9010 Debian Live System Building Environment Guide v0.1.pdf
 
 ### Installing
 
-Please install Debian 8.1 amd64 standard in server(ref. [debian-live-8.1.0-amd64-standard.iso](http://cdimage.debian.org/mirror/cdimage/archive/8.1.0-live/amd64/iso-hybrid/debian-live-8.1.0-amd64-standard.iso)) that is 
+Please install Debian 8.1 amd64 standard in server (image:[debian-live-8.1.0-amd64-standard.iso](http://cdimage.debian.org/mirror/cdimage/archive/8.1.0-live/amd64/iso-hybrid/debian-live-8.1.0-amd64-standard.iso)) that is 
 a suitable platform for A1105 live build.  Internet network access is necessary too. 
 
 In Debian 8.1
@@ -42,7 +42,8 @@ cat /etc/*-release
 	> PRETTY_NAME="Debian GNU/Linux 8 (jessie)"
 ```
 
-#### Install esp-9010 packages
+#### Prepare for 9010 image
+
 ```
 mkdir $HOME/live-image
 ```
@@ -57,3 +58,31 @@ cd $HOME/live-image/esp-9010
 ls
 	> auto/  config/  live-cache.tar.bz2  Makefile  persistence.conf  src/  version
 ```
+
+#### Debian packages
+
+```
+sudo apt-get update -y
+sudo apt-get install -y debootstrap syslinux isolinux squashfs-tools
+sudo apt-get install -y genisoimage memtest86+ rsync nano vim
+```
+
+#### Update source.list
+> 9010-live-UG, page10
+Set up the stable repository (jessie)
+```
+sudo nano /etc/apt/sources.list
+	#add two source download list at first two line
+	- deb cdrom:[Debian GNU/Linux 8 _Jessie_ - Official Snapshot amd64 LIVE/INSTALL Binary 20150606-14:41]/ jessie main
+	+ deb http://http.debian.net/debian jessie main contrib non-free 
+	+ deb-src http://http.debian.net/debian jessie main contrib non-free 
+	+ deb http://apt.dockerproject.org/repo debian-jessie main
+	+ deb http://http.debian.net/debian jessie main contrib non-free
+	+ deb http://httpredir.debian.org/debian jessie main
+	+ deb-src http://httpredir.debian.org/debian jessie main
+	+ deb http://httpredir.debian.org/debian jessie-updates main
+	+ deb-src http://httpredir.debian.org/debian jessie-updates main
+	+ deb http://security.debian.org/ jessie/updates main
+	+ deb-src http://security.debian.org/ jessie/updates main
+sudo apt-get update
+```	
