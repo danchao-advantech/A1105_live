@@ -13,7 +13,7 @@ Please refer to [ESP-9010 Debian Live System Building Environment Guide v0.1.pdf
 
 ### Installing
 
-Please install Debian 8.1 amd64 standard in server(ref. **debian-live-8.1.0-amd64-standard.iso**) that is 
+Please install Debian 8.1 amd64 standard in server(ref. [debian-live-8.1.0-amd64-standard.iso](http://cdimage.debian.org/mirror/cdimage/archive/8.1.0-live/amd64/iso-hybrid/debian-live-8.1.0-amd64-standard.iso)) that is 
 a suitable platform for A1105 live build.  Internet network access is necessary too. 
 
 In Debian 8.1
