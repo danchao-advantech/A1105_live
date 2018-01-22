@@ -26,7 +26,7 @@ In Debian 8.1
 apt-get install sudo
 chmod u+w /etc/sudoers
 visudo
-	# add "user" to root privilege
-	user	ALL=(root) NOPASSWD:ALL
+	> # add "user" to root privilege
+	> user	ALL=(root) NOPASSWD:ALL
 chmod u-w /etc/sudoers
 ```
