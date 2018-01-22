@@ -68,7 +68,9 @@ sudo apt-get install -y genisoimage memtest86+ rsync nano vim
 ```
 
 #### Update source.list
+
 > 9010-live-UG, page10
+
 Set up the stable repository (jessie)
 ```
 sudo nano /etc/apt/sources.list
