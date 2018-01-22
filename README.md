@@ -111,7 +111,7 @@ sudo apt-get install -y autoconf
 sudo apt-get install -y libssl-dev
 ```
 
-#### Install packages for gcc4.8 
+Install packages for gcc4.8 
 
 > 9010-live-UG, page11
 
@@ -125,7 +125,7 @@ sudo update-alternatives --config gcc
 	> type selection change to "1"
 ```
 
-#### Remove unused/out-of-date packages 
+Remove unused/out-of-date packages 
 
 > 9010-live-UG, page11
 
