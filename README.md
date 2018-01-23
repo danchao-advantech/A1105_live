@@ -50,7 +50,7 @@ sudo apt-get install -y debootstrap syslinux isolinux squashfs-tools
 sudo apt-get install -y genisoimage memtest86+ rsync nano vim git
 ```
 
-Prepare for 9010 image from GitHub and move the whole "esp-9010_lmp_esw_v00_06" directory to $HOME/live-image/esp-9010 directory.
+Prepare for 9010 image from GitHub and move the whole "*esp-9010_lmp_esw_v00_06*" directory to **$HOME/live-image/esp-9010 directory**.
 
 ```
 cd $HOME
