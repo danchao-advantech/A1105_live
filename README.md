@@ -8,7 +8,7 @@ Please refer to [ESP-9010 Debian Live System Building Environment Guide v0.1.pdf
 ### Prerequisites
 
 * [ESP-9010 Debian Live System Building Environment Guide v0.1.pdf](https://github.com/danchao-advantech/A1105_live/blob/master/ESP-9010%20Debian%20Live%20System%20Building%20Environment%20Guide%20v0.1.pdf) (Abbreviations: "*9010-live-UG*")
-* esp-9010_lmp_esw_v00_06.src.tar.bz2
+* [esp-9010_lmp_esw_v00_06](git clone https://github.com/danchao-advantech/A1105_live)
 * [install_D8.sh](https://github.com/danchao-advantech/A1105_live/blob/master/install_D8.sh)
 
 ### Installing
@@ -42,29 +42,26 @@ cat /etc/*-release
 	> PRETTY_NAME="Debian GNU/Linux 8 (jessie)"
 ```
 
-Prepare for 9010 image
-
-```
-mkdir $HOME/live-image
-```
-Please copy "esp-9010_lmp_esw_v00_06.src.tar.bz2" to $HOME directory by winSCP or USB drive.
-```
-mv esp-9010_lmp_esw_v00_06.src.tar.bz2 $HOME/live-image
-cd $HOME/live-image
-tar xf esp-9010_lmp_esw_v00_06.src.tar.bz2
-mv  esp-9010_lmp_esw_v00_06  esp-9010
-mv esp-9010_lmp_esw_v00_06.src.tar.bz2 $HOME
-cd $HOME/live-image/esp-9010
-ls
-	> auto/  config/  live-cache.tar.bz2  Makefile  persistence.conf  src/  version
-```
-
 General packages
 
 ```
 sudo apt-get update -y
 sudo apt-get install -y debootstrap syslinux isolinux squashfs-tools
-sudo apt-get install -y genisoimage memtest86+ rsync nano vim
+sudo apt-get install -y genisoimage memtest86+ rsync nano vim git
+```
+
+Prepare for 9010 image from GitHub and move the whole "esp-9010_lmp_esw_v00_06" directory to $HOME/live-image/esp-9010 directory.
+
+```
+cd $HOME
+git clone https://github.com/danchao-advantech/A1105_live
+mkdir -p $HOME/live-image
+mv $HOME/A1105_live/esp-9010_lmp_esw_v00_06 $HOME/live-image/esp-9010
+cd $HOME/live-image/esp-9010
+ls
+	> auto/  config/  linux-source-3.16.0.tar.bz2.partaa linux-source-3.16.0.tar.bz2.partab Makefile  persistence.conf  src/  version
+cat linux-source-3.16.0.tar.bz2.part* > linux-source-3.16.0.tar.bz2
+mv linux-source-3.16.0.tar.bz2 src/linux-kernel
 ```
 
 Update source.list
@@ -159,11 +156,6 @@ Navigate all available packages first by executing “apt-cache dumpavail” in 
 apt-cache dumpavail
 ```
 
-Copy [config](https://github.com/danchao-advantech/A1105_live/blob/master/config) to replace the same name file locate in $HOME/live-image/esp-9010/auto that will avoid of ftp mirror site issue
-
-```
-cp config $HOME/live-image/esp-9010/auto
-```
 
 ### live-build
 
@@ -175,10 +167,10 @@ Generate LMP firmware image from scratch:
 cd $HOME/live-image/esp-9010
 make disclean
 make all
-	> ~15 min
+	> ~ 30 min
 make imgclean
 make image
-	> ~10 min
+	> ~ 30 min
 ```
 
 live image generated in $HOME/live-image/esp-9010 directory names "live-image-amd64" (934Mb)
@@ -202,3 +194,7 @@ chmod 777 ./install_D8.sh
 ```
 
 ### done!
+```
+[AB.Huang](ab.huang@advantech.com)
+
+
