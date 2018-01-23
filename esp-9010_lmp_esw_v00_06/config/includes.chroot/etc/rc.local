@@ -1,0 +1,43 @@
+#!/bin/sh -e
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
+# By default this script does nothing.
+
+# copy updated files
+/usr/etc/rc.upgrade
+
+modprobe lfdd_drv
+modprobe iqvlinux
+modprobe ehset
+
+ifconfig eth0 up
+ifconfig eth1 up
+ifconfig eth4 up
+
+ethtool -G eth0 rx 4096 tx 4096
+ethtool -G eth1 rx 4096 tx 4096
+
+# i2c driver and gpio remap only support A102 or later version switch board
+value=`ipmitool raw 0x2e 0xf5 0x39 0x28 0x00 | cut -d " " -f 5`
+cmdrv=$?
+if [ $cmdrv -eq 0 ] && [ "$value" != "01" ]; then
+	/etc/init.d/gpio-remap start
+else
+	/etc/init.d/i2cinit.sh
+fi
+
+#check if user "dp" and "cp" exist
+/etc/account-init.sh
+
+# periodic to check both switch if ready and feed watchdog
+/etc/init.d/sys-polld start
+
+exit 0

@@ -1,0 +1,67 @@
+#!/bin/bash
+
+BOOT_OPTION_SDA1="live-media=/dev/sda1"
+BOOT_OPTION_SDB1="live-media=/dev/sdb1"
+MENU_DEFAULT="menu default"
+
+
+SDA1="/tmp/tmp_sda1"
+SDB1="/tmp/tmp_sdb1"
+
+CMD_mSATA1="mSATA1"
+CMD_mSATA2="mSATA2"
+
+LIVE_CFG_SDA1="$SDA1/syslinux/live.cfg"
+LIVE_CFG_SDB1="$SDB1/syslinux/live.cfg"
+LIVE_FILE_TMP="/tmp/live.cfg.tmp"
+LIVE_FILE="/tmp/live.cfg"
+
+
+if [ "$1" = "$CMD_mSATA1" ];then
+	default_select=0
+elif  [ "$1" = "$CMD_mSATA2" ];then
+	default_select=1
+else
+  echo "bootdefault $CMD_mSATA1/$CMD_mSATA2"
+  exit
+fi
+
+mkdir -p $SDA1
+mkdir -p $SDB1
+
+mount -t vfat /dev/sda1 $SDA1 &> /dev/null
+mount -t vfat /dev/sdb1 $SDB1 &> /dev/null
+
+rm $LIVE_FILE &> /dev/null
+cp $LIVE_CFG_SDA1 $LIVE_FILE_TMP
+
+cat $LIVE_FILE_TMP | while read -r line
+do
+    if [ "$line" = "$MENU_DEFAULT" ];then
+	continue
+    fi
+
+    if [ "$line" = "menu label ^Debian Live mSATA1 (amd64)" ];then
+        if [ $default_select -eq 0 ];then
+	    echo "$line" >> $LIVE_FILE
+	    echo "$MENU_DEFAULT" >> $LIVE_FILE
+	    continue
+	fi
+    elif [ "$line" = "menu label ^Debian Live mSATA2 (amd64)" ];then
+        if [ $default_select -eq 1 ];then
+            echo "$line" >> $LIVE_FILE
+	    echo "$MENU_DEFAULT" >> $LIVE_FILE
+	    continue
+	fi
+    fi
+
+    echo "$line" >> $LIVE_FILE
+done
+
+cp $LIVE_FILE $LIVE_CFG_SDA1 &> /dev/null
+cp $LIVE_FILE $LIVE_CFG_SDB1 &> /dev/null
+
+sync;sync;sync
+umount $SDA1 $SDB1 &> /dev/null
+rm -rf $SDA1 $SDB1 
+
