@@ -209,6 +209,7 @@ Finally, create a live USB drive (/dev/sdf) by "*A1105_lmp_esw_v00_0X.img*" and 
 
 ```
 cp $HOME/A1105_live/install_D8.sh $HOME
+cd $HOME
 chmod 777 ./install_D8.sh
 ./install_D8.sh -f A1105_lmp_esw_v00_0X.img -d /dev/sdf
 ```
