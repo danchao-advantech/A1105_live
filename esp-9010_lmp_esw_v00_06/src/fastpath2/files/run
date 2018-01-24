@@ -1,0 +1,96 @@
+#!/bin/bash
+
+DP_READY="/tmp/.SwitchDPReady"
+FP_INSTALL_DIR=/mnt/fastpath2
+FP_MOUNT_DIR=/mnt/application2
+RELOAD_FILE=/tmp/fp2_reload_opt
+CP_READY=/tmp/.SwitchCPReady
+RELOAD_SYSTEM=0
+RELOAD_FASTPATH=1
+RELOAD_NONE=2
+MODE_ISOLATE=`cat $FP_INSTALL_DIR/mode_isolate`
+
+check_image() {
+    if [ ! -s $FP_MOUNT_DIR/image2 ]; then
+        cp $FP_MOUNT_DIR/image1 $FP_MOUNT_DIR/image2
+    fi
+
+    if [ ! -s $FP_INSTALL_DIR/image2 ]; then
+        cp $FP_MOUNT_DIR/image2 $FP_INSTALL_DIR/image2
+    fi
+}
+
+check_conf() {
+
+rm $FP_MOUNT_DIR/rc.soc
+
+    if [ "x$MODE_ISOLATE" == "x0" ]; then
+        ln -s $FP_MOUNT_DIR/rc.soc.bridge $FP_MOUNT_DIR/rc.soc
+    else
+        ln -s $FP_MOUNT_DIR/rc.soc.isolate $FP_MOUNT_DIR/rc.soc
+    fi
+
+    if [ ! -s $FP_INSTALL_DIR/factory-defaults ]; then
+        echo -n "copy factory-defaults to $FP_INSTALL_DIR/factory-defaults..."
+        cp $FP_MOUNT_DIR/factory-defaults $FP_INSTALL_DIR/factory-defaults
+        echo "done."
+    fi
+
+    if [ ! -s $FP_INSTALL_DIR/startup-config ]; then
+        echo -n "apply factory-defaults to $FP_INSTALL_DIR/startup-config..."
+        cp $FP_INSTALL_DIR/factory-defaults $FP_INSTALL_DIR/startup-config
+        echo "done."
+    fi
+}
+
+get_reload_opt() {
+    if [ -f $RELOAD_FILE ]; then
+        case "`cat $RELOAD_FILE`" in
+            $RELOAD_FASTPATH*)
+                return $RELOAD_FASTPATH
+                ;;
+
+            $RELOAD_NONE*)
+                return $RELOAD_NONE
+                ;;
+
+            *)
+                return $RELOAD_SYSTEM
+                ;;
+        esac
+    else
+        return $RELOAD_SYSTEM
+    fi
+}
+
+   if [ -f $CP_READY ]; then
+         echo "ControlPlane Switch is Running..."
+         exit 0
+   fi
+
+
+   echo "Waiting for DataPlane Switch Ready "
+   # Waiting for DataPlane Switch Ready
+   while [ ! -f $DP_READY ]; do
+        echo -n "."
+        sleep 1
+   done
+   sleep 5
+
+   check_image
+   check_conf
+   while [ 1 ]; do
+       $FP_MOUNT_DIR/init.sh &
+       $FP_MOUNT_DIR/launcher start
+       rm $CP_READY
+       get_reload_opt
+       RELOAD_OPT=$?
+       [ $RELOAD_OPT -eq $RELOAD_NONE ] && { \
+       /bin/bash --login; \
+       break; \
+       }
+       [ $RELOAD_OPT -eq $RELOAD_SYSTEM ] && { \
+       reboot; \
+       while [ 1 ]; do sleep 1; done; \
+       }
+   done

@@ -1,0 +1,157 @@
+#/*
+#**********************************************************************
+#*
+#* @filename  0001_kernel_upgrade-0.1.0.patch
+#*
+#* @purpose   patch for kernel upgrade
+#*
+#* @create    2014/12/25
+#*
+#* @author    eric lin <eric.lin@advantech.com.tw>
+#*
+#* @history   2014/12/25: init version
+#*
+#**********************************************************************
+#*/
+#/*
+#* $Copyright: Copyright 1983-2015 Advantech Co., Ltd.
+#* This program is the proprietary software of Advantech Corporation
+#* and/or its licensors, and may only be used, duplicated, modified
+#* or distributed pursuant to the terms and conditions of a separate,
+#* written license agreement executed between you and Advantech
+#* (an "Authorized License").  Except as set forth in an Authorized
+#* License, Advantech grants no license (express or implied), right
+#* to use, or waiver of any kind with respect to the Software, and
+#* Advantech expressly reserves all rights in and to the Software
+#* and all intellectual property rights therein.  IF YOU HAVE
+#* NO AUTHORIZED LICENSE, THEN YOU HAVE NO RIGHT TO USE THIS SOFTWARE
+#* IN ANY WAY, AND SHOULD IMMEDIATELY NOTIFY ADVANTECH AND DISCONTINUE
+#* ALL USE OF THE SOFTWARE.  
+#*
+#* Except as expressly set forth in the Authorized License,
+#*
+#* 1.     THIS PROGRAM, INCLUDING ITS STRUCTURE, SEQUENCE AND ORGANIZATION,
+#* CONSTITUTES THE VALUABLE TRADE SECRETS OF ADVANTECH, AND YOU SHALL USE
+#* ALL REASONABLE EFFORTS TO PROTECT THE CONFIDENTIALITY THEREOF,
+#* AND TO USE THIS INFORMATION ONLY IN CONNECTION WITH YOUR USE OF
+#* ADVANTECH PRODUCTS.
+#*
+#* 2.     TO THE MAXIMUM EXTENT PERMITTED BY LAW, THE SOFTWARE IS
+#* PROVIDED "AS IS" AND WITH ALL FAULTS AND ADVANTECH MAKES NO PROMISES,
+#* REPRESENTATIONS OR WARRANTIES, EITHER EXPRESS, IMPLIED, STATUTORY,
+#* OR OTHERWISE, WITH RESPECT TO THE SOFTWARE.  ADVANTECH SPECIFICALLY
+#* DISCLAIMS ANY AND ALL IMPLIED WARRANTIES OF TITLE, MERCHANTABILITY,
+#* NONINFRINGEMENT, FITNESS FOR A PARTICULAR PURPOSE, LACK OF VIRUSES,
+#* ACCURACY OR COMPLETENESS, QUIET ENJOYMENT, QUIET POSSESSION OR
+#* CORRESPONDENCE TO DESCRIPTION. YOU ASSUME THE ENTIRE RISK ARISING
+#* OUT OF USE OR PERFORMANCE OF THE SOFTWARE.
+#*
+#* 3.     TO THE MAXIMUM EXTENT PERMITTED BY LAW, IN NO EVENT SHALL
+#* ADVANTECH OR ITS LICENSORS BE LIABLE FOR (i) CONSEQUENTIAL,
+#* INCIDENTAL, SPECIAL, INDIRECT, OR EXEMPLARY DAMAGES WHATSOEVER
+#* ARISING OUT OF OR IN ANY WAY RELATING TO YOUR USE OF OR INABILITY
+#* TO USE THE SOFTWARE EVEN IF ADVANTECH HAS BEEN ADVISED OF THE
+#* POSSIBILITY OF SUCH DAMAGES; OR (ii) ANY AMOUNT IN EXCESS OF
+#* THE AMOUNT ACTUALLY PAID FOR THE SOFTWARE ITSELF OR USD 1.00,
+#* WHICHEVER IS GREATER. THESE LIMITATIONS SHALL APPLY NOTWITHSTANDING
+#* ANY FAILURE OF ESSENTIAL PURPOSE OF ANY LIMITED REMEDY.
+#*
+#* 4.     REDISTRIBUTIONS IN BINARY FORM MUST REPRODUCE BELOW COPYRIGHT NOTICS
+#*/
+--- lfdk-0.1.0.orig/lfdd/lfdd.c	2009-03-03 10:06:49.000000000 +0800
++++ lfdk-0.1.0/lfdd/lfdd.c	2014-06-05 11:12:24.372875775 +0800
+@@ -26,7 +26,12 @@
+ 
+ #include <asm/io.h>
+ #include <asm/irq.h>
++#include <linux/version.h>
++#if LINUX_VERSION_CODE <= KERNEL_VERSION(3,3,0)
+ #include <asm/system.h>
++#else
++#include <asm/switch_to.h>
++#endif
+ #include <asm/uaccess.h>
+ 
+ #include "lfdd.h"
+@@ -94,8 +99,13 @@
+ }
+ 
+ 
++#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,36)
+ static int lfdd_ioctl( struct inode *inode, struct file *file
+                             , unsigned int cmd, unsigned long arg ) {
++#else
++static long lfdd_ioctl( struct file *file
++                            , unsigned int cmd, unsigned long arg ) {
++#endif
+ 
+     struct lfdd_pci_t lfdd_pci_data;
+     struct lfdd_mem_t lfdd_mem_data;
+@@ -203,7 +213,11 @@
+ static struct file_operations lfdd_fops = {
+ 
+     .owner      =   THIS_MODULE,
++#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,36)
+     .ioctl      =   lfdd_ioctl,
++#else
++    .unlocked_ioctl = lfdd_ioctl,
++#endif
+     .open       =   lfdd_open,
+     .release    =   lfdd_release,
+ };
+--- lfdk-0.1.0.orig/lfdd/libio.c	2009-03-03 10:06:49.000000000 +0800
++++ lfdk-0.1.0/lfdd/libio.c	2014-06-05 10:58:43.379197063 +0800
+@@ -26,7 +26,12 @@
+ 
+ #include <asm/io.h>
+ #include <asm/irq.h>
++#include <linux/version.h>
++#if LINUX_VERSION_CODE <= KERNEL_VERSION(3,3,0)
+ #include <asm/system.h>
++#else
++#include <asm/switch_to.h>
++#endif
+ #include <asm/uaccess.h>
+ 
+ #include <linux/highmem.h>
+--- lfdk-0.1.0.orig/lfdd/libmem.c	2009-03-03 10:06:49.000000000 +0800
++++ lfdk-0.1.0/lfdd/libmem.c	2014-06-05 10:59:32.002585784 +0800
+@@ -26,7 +26,12 @@
+ 
+ #include <asm/io.h>
+ #include <asm/irq.h>
++#include <linux/version.h>
++#if LINUX_VERSION_CODE <= KERNEL_VERSION(3,3,0)
+ #include <asm/system.h>
++#else
++#include <asm/switch_to.h>
++#endif
+ #include <asm/uaccess.h>
+ 
+ #include <linux/highmem.h>
+--- lfdk-0.1.0.orig/lfdd/libpci_x86.c	2009-03-03 10:06:49.000000000 +0800
++++ lfdk-0.1.0/lfdd/libpci_x86.c	2014-06-05 10:59:57.162269484 +0800
+@@ -26,7 +26,12 @@
+ 
+ #include <asm/io.h>
+ #include <asm/irq.h>
++#include <linux/version.h>
++#if LINUX_VERSION_CODE <= KERNEL_VERSION(3,3,0)
+ #include <asm/system.h>
++#else
++#include <asm/switch_to.h>
++#endif
+ #include <asm/uaccess.h>
+ 
+ #include "lfdd.h"
+--- lfdk-0.1.0/lfdk/Makefile.org	2015-09-11 04:10:26.092228715 -0400
++++ lfdk-0.1.0/lfdk/Makefile	2015-09-11 04:10:42.244300727 -0400
+@@ -14,7 +14,7 @@ STRINGS				=   $(CROSS_COMPILE)strings
+ STRIP				=   $(CROSS_COMPILE)strip
+ 
+ CFLAGS				=
+-LDFLAGS				=   -lpanel
++LDFLAGS				=   -lpanel -lcurses
+ OBJS				=   lfdk
+ LIBS				=	libmem.c libpci.c libio.c
+ 

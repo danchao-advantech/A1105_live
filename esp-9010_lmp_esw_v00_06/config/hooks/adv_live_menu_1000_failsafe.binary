@@ -1,0 +1,24 @@
+#!/bin/sh
+
+LIVE_FILE="binary/syslinux/live.cfg"
+LIVE_FILE_BAK="binary/syslinux/live.cfg.bak"
+
+menu_add()
+{
+start=0
+cat $LIVE_FILE_BAK | while read -r line
+do
+        if [ "$line" = "label live-amd64-failsafe" ];then
+                start=1
+        fi
+
+        if [ $start -eq 1 ];then
+                echo "$line" >> $LIVE_FILE
+        fi
+done
+
+echo "" >> $LIVE_FILE
+
+}
+
+menu_add

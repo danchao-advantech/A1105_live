@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# Remove SSH Login Message 
+rm -f /etc/motd
