@@ -92,6 +92,7 @@ ls
 	> config  linux-source-3.16.0.tar.bz2.partab  persistence.conf  version
 cat linux-source-3.16.0.tar.bz2.part* > linux-source-3.16.0.tar.bz2
 mv linux-source-3.16.0.tar.bz2 src/linux-kernel
+rm linux-source-3.16.0.tar.bz2.part*
 ```
 
 
