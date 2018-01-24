@@ -8,7 +8,7 @@ Please refer to [ESP-9010 Debian Live System Building Environment Guide v0.1.pdf
 ### Prerequisites
 
 * [ESP-9010 Debian Live System Building Environment Guide v0.1.pdf](https://github.com/danchao-advantech/A1105_live/blob/master/ESP-9010%20Debian%20Live%20System%20Building%20Environment%20Guide%20v0.1.pdf) (Abbreviations: "*9010-live-UG*")
-* [esp-9010_lmp_esw_v00_06](git clone https://github.com/danchao-advantech/A1105_live)
+* esp-9010_lmp_esw_v00_06 directory (git clone https://github.com/danchao-advantech/A1105_live)
 * [install_D8.sh](https://github.com/danchao-advantech/A1105_live/blob/master/install_D8.sh)
 
 ### Installing
