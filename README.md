@@ -171,11 +171,11 @@ apt-cache dumpavail
 ```
 
 
-### live-build
+### live-build process
 
 > 9010-live-UG, page6
 
-Generate LMP firmware image from scratch:
+Build live image
 
 ```
 cd $HOME/live-image/esp-9010
