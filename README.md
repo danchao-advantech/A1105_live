@@ -5,20 +5,24 @@
 These instructions will show you how to build a A1105 live image in Debian 8.1 (jessie) quickly.
 Please refer to [ESP-9010 Debian Live System Building Environment Guide v0.1.pdf](https://github.com/danchao-advantech/A1105_live/blob/master/ESP-9010%20Debian%20Live%20System%20Building%20Environment%20Guide%20v0.1.pdf) for other detail.
 
+
 ### Prerequisites
 
 * [ESP-9010 Debian Live System Building Environment Guide v0.1.pdf](https://github.com/danchao-advantech/A1105_live/blob/master/ESP-9010%20Debian%20Live%20System%20Building%20Environment%20Guide%20v0.1.pdf) (Abbreviations: "*9010-live-UG*")
 * esp-9010_lmp_esw_v00_06 directory (git clone https://github.com/danchao-advantech/A1105_live)
 * [install_D8.sh](https://github.com/danchao-advantech/A1105_live/blob/master/install_D8.sh)
 
+
 ### Installing
 
 Please install Debian 8.1 amd64 standard in server (image: [debian-live-8.1.0-amd64-standard.iso](http://cdimage.debian.org/mirror/cdimage/archive/8.1.0-live/amd64/iso-hybrid/debian-live-8.1.0-amd64-standard.iso)) that is 
 a suitable platform for A1105 live build.  Internet network access is necessary too. 
 
+
 In Debian 8.1
 - Login:    root / user
 - password: (...)
+
 
 Login debian 8.1 with root
 
@@ -32,6 +36,7 @@ chmod u-w /etc/sudoers
 logout
 ```
 
+
 Login debian 8.1 with user
 
 ```
@@ -42,7 +47,8 @@ cat /etc/*-release
 	> PRETTY_NAME="Debian GNU/Linux 8 (jessie)"
 ```
 
-Update and general packages
+
+apt-get update and general packages install
 
 ```
 sudo apt-get update -y
@@ -50,7 +56,8 @@ sudo apt-get install -y debootstrap syslinux isolinux squashfs-tools
 sudo apt-get install -y genisoimage memtest86+ rsync nano vim git
 ```
 
-Prepare for 9010 image from GitHub and move the whole "*esp-9010_lmp_esw_v00_06*" directory to **$HOME/live-image/esp-9010 directory**.
+
+Get 9010 image source from GitHub, move/rename "*esp-9010_lmp_esw_v00_06*" directory to **$HOME/live-image/esp-9010** and merge linux source files.
 
 ```
 cd $HOME
@@ -59,10 +66,12 @@ mkdir -p $HOME/live-image
 mv $HOME/A1105_live/esp-9010_lmp_esw_v00_06 $HOME/live-image/esp-9010
 cd $HOME/live-image/esp-9010
 ls
-	> auto/  config/  linux-source-3.16.0.tar.bz2.partaa linux-source-3.16.0.tar.bz2.partab Makefile  persistence.conf  src/  version
+	> auto    linux-source-3.16.0.tar.bz2.partaa  Makefile          src
+	> config  linux-source-3.16.0.tar.bz2.partab  persistence.conf  version
 cat linux-source-3.16.0.tar.bz2.part* > linux-source-3.16.0.tar.bz2
 mv linux-source-3.16.0.tar.bz2 src/linux-kernel
 ```
+
 
 Update source.list
 
@@ -86,7 +95,8 @@ sudo nano /etc/apt/sources.list
 sudo apt-get update
 ```	
 
-Install packages for live-build
+
+Install packages for live build
 
 > 9010-live-UG, page10
 
@@ -108,6 +118,7 @@ sudo apt-get install -y autoconf
 sudo apt-get install -y libssl-dev
 ```
 
+
 Install packages for gcc4.8 
 
 > 9010-live-UG, page11
@@ -122,6 +133,7 @@ sudo update-alternatives --config gcc
 	> type selection change to "1"
 ```
 
+
 Remove unused/out-of-date packages 
 
 > 9010-live-UG, page11
@@ -133,6 +145,7 @@ dpkg --get-selections | grep linux
 sudo update-pciids
 sudo update-usbids
 ```
+
 
 Modify script for live build
 
@@ -147,6 +160,7 @@ sudo nano /usr/lib/live/build/binary_hdd
 	+ sync; sync; sync; sync; sync
 	  umount chroot/binary.tmp 
 ```
+
 
 Navigate all available packages first by executing “apt-cache dumpavail” in the host system. 
 
@@ -173,25 +187,31 @@ make image
 	> ~ 30 min
 ```
 
-live image generated in $HOME/live-image/esp-9010 directory names "live-image-amd64" (934Mb)
+
+live image generated in $HOME/live-image/esp-9010 directory names "*live-image-amd64*" (934Mb)
 
 ```
 cd $HOME/live-image/esp-9010
 ls -al
 ```
 
-Rename live-image-amd64 to *A1105_lmp_esw_v00_0X.img*
+
+Copy *live-image-amd64* to *A1105_lmp_esw_v00_0X.img*(Home dir)
 
 ```
-mv live-image-amd64 A1105_lmp_esw_v00_0X.img
+cp live-image-amd64 $HOME/A1105_lmp_esw_v00_0X.img
+cd $HOME
+ls -al
 ```
 
-Finally, build a live USB drive (/dev/sdf) by "*A1105_lmp_esw_v00_0X.img*" and [install_D8.sh](https://github.com/danchao-advantech/A1105_live/blob/master/install_D8.sh)!
+
+Finally, create a live USB drive (/dev/sdf) by "*A1105_lmp_esw_v00_0X.img*" and [install_D8.sh](https://github.com/danchao-advantech/A1105_live/blob/master/install_D8.sh)!
 
 ```
 chmod 777 ./install_D8.sh
 ./install_D8.sh -f A1105_lmp_esw_v00_0X.img -d /dev/sdf
 ```
+
 
 ### done!
 
