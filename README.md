@@ -42,7 +42,7 @@ cat /etc/*-release
 	> PRETTY_NAME="Debian GNU/Linux 8 (jessie)"
 ```
 
-General packages
+Update and general packages
 
 ```
 sudo apt-get update -y
