@@ -188,7 +188,7 @@ make image
 ```
 
 
-A new live image "*live-image-amd64*" (934Mb) be generated in $HOME/live-image/esp-9010 directory.
+A new live image "*live-image-amd64*" (934Mb) be generated in **$HOME/live-image/esp-9010** directory.
 
 ```
 cd $HOME/live-image/esp-9010
