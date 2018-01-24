@@ -1,7 +1,0 @@
-#!/bin/sh
-
-LIVE_FILE="binary/syslinux/live.cfg"
-LIVE_FILE_BAK="binary/syslinux/live.cfg.bak"
-
-mv $LIVE_FILE $LIVE_FILE_BAK
-
