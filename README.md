@@ -48,6 +48,28 @@ cat /etc/*-release
 ```
 
 
+Update source.list
+
+> 9010-live-UG, page10
+
+Set up the stable repository (jessie)
+```
+sudo nano /etc/apt/sources.list
+	#add two source download list at first two line
+	- deb cdrom:[Debian GNU/Linux 8 _Jessie_ - Official Snapshot amd64 LIVE/INSTALL Binary 20150606-14:41]/ jessie main
+	+ deb http://http.debian.net/debian jessie main contrib non-free 
+	+ deb-src http://http.debian.net/debian jessie main contrib non-free 
+	+ deb http://apt.dockerproject.org/repo debian-jessie main
+	+ deb http://http.debian.net/debian jessie main contrib non-free
+	+ deb http://httpredir.debian.org/debian jessie main
+	+ deb-src http://httpredir.debian.org/debian jessie main
+	+ deb http://httpredir.debian.org/debian jessie-updates main
+	+ deb-src http://httpredir.debian.org/debian jessie-updates main
+	+ deb http://security.debian.org/ jessie/updates main
+	+ deb-src http://security.debian.org/ jessie/updates main
+```	
+
+
 apt-get update and general packages install
 
 ```
@@ -71,29 +93,6 @@ ls
 cat linux-source-3.16.0.tar.bz2.part* > linux-source-3.16.0.tar.bz2
 mv linux-source-3.16.0.tar.bz2 src/linux-kernel
 ```
-
-
-Update source.list
-
-> 9010-live-UG, page10
-
-Set up the stable repository (jessie)
-```
-sudo nano /etc/apt/sources.list
-	#add two source download list at first two line
-	- deb cdrom:[Debian GNU/Linux 8 _Jessie_ - Official Snapshot amd64 LIVE/INSTALL Binary 20150606-14:41]/ jessie main
-	+ deb http://http.debian.net/debian jessie main contrib non-free 
-	+ deb-src http://http.debian.net/debian jessie main contrib non-free 
-	+ deb http://apt.dockerproject.org/repo debian-jessie main
-	+ deb http://http.debian.net/debian jessie main contrib non-free
-	+ deb http://httpredir.debian.org/debian jessie main
-	+ deb-src http://httpredir.debian.org/debian jessie main
-	+ deb http://httpredir.debian.org/debian jessie-updates main
-	+ deb-src http://httpredir.debian.org/debian jessie-updates main
-	+ deb http://security.debian.org/ jessie/updates main
-	+ deb-src http://security.debian.org/ jessie/updates main
-sudo apt-get update
-```	
 
 
 Install packages for live build
