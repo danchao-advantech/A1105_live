@@ -1,0 +1,178 @@
+--- linux-source-3.16.0/debian/rules.gen.org	2015-07-23 05:09:28.553046262 -0400
++++ linux-source-3.16.0/debian/rules.gen	2015-07-23 05:14:28.760876478 -0400
+@@ -22,8 +22,8 @@ binary-arch_amd64_extra::
+ binary-arch_amd64_none: binary-arch_amd64_none_amd64 binary-arch_amd64_none_real
+ binary-arch_amd64_none_amd64: binary-arch_amd64_none_amd64_real
+ binary-arch_amd64_none_amd64_real::
+-	$(MAKE) -f debian/rules.real binary-arch-flavour ABINAME='3.16.0-4' ARCH='amd64' COMPILER='gcc-4.8' DEBUG='True' FEATURESET='none' FLAVOUR='amd64' IMAGE_FILE='arch/x86/boot/bzImage' IMAGE_INSTALL_STEM='vmlinuz' KCONFIG='debian/config/config debian/config/kernelarch-x86/config debian/config/kernelarch-x86/config-arch-64' KCONFIG_OPTIONS='-o DEBUG_INFO=y' KERNEL_ARCH='x86' LOCALVERSION='-amd64' LOCALVERSION_HEADERS='' LOCALVERSION_IMAGE='-amd64' MODULES='True' SOURCEVERSION='3.16.7-ckt11-1' TYPE='plain' UPSTREAMVERSION='3.16' VERSION='3.16'
+-	$(MAKE) -f debian/rules.real install-dummy DH_OPTIONS='-pxen-linux-system-3.16.0-4-amd64' ABINAME='3.16.0-4' ARCH='amd64' COMPILER='gcc-4.8' DEBUG='True' FEATURESET='none' FLAVOUR='amd64' IMAGE_FILE='arch/x86/boot/bzImage' IMAGE_INSTALL_STEM='vmlinuz' KCONFIG='debian/config/config debian/config/kernelarch-x86/config debian/config/kernelarch-x86/config-arch-64' KCONFIG_OPTIONS='-o DEBUG_INFO=y' KERNEL_ARCH='x86' LOCALVERSION='-amd64' LOCALVERSION_HEADERS='' LOCALVERSION_IMAGE='-amd64' MODULES='True' SOURCEVERSION='3.16.7-ckt11-1' TYPE='plain' UPSTREAMVERSION='3.16' VERSION='3.16'
++	$(MAKE) -f debian/rules.real binary-arch-flavour ABINAME='3.16.0-4' ARCH='amd64' COMPILER='gcc-4.8' DEBUG='False' FEATURESET='none' FLAVOUR='amd64' IMAGE_FILE='arch/x86/boot/bzImage' IMAGE_INSTALL_STEM='vmlinuz' KCONFIG='debian/config/config debian/config/kernelarch-x86/config debian/config/kernelarch-x86/config-arch-64' KCONFIG_OPTIONS='-o DEBUG_INFO=y' KERNEL_ARCH='x86' LOCALVERSION='-amd64' LOCALVERSION_HEADERS='' LOCALVERSION_IMAGE='-amd64' MODULES='True' SOURCEVERSION='3.16.7-ckt11-1' TYPE='plain' UPSTREAMVERSION='3.16' VERSION='3.16'
++	$(MAKE) -f debian/rules.real install-dummy DH_OPTIONS='-pxen-linux-system-3.16.0-4-amd64' ABINAME='3.16.0-4' ARCH='amd64' COMPILER='gcc-4.8' DEBUG='False' FEATURESET='none' FLAVOUR='amd64' IMAGE_FILE='arch/x86/boot/bzImage' IMAGE_INSTALL_STEM='vmlinuz' KCONFIG='debian/config/config debian/config/kernelarch-x86/config debian/config/kernelarch-x86/config-arch-64' KCONFIG_OPTIONS='-o DEBUG_INFO=y' KERNEL_ARCH='x86' LOCALVERSION='-amd64' LOCALVERSION_HEADERS='' LOCALVERSION_IMAGE='-amd64' MODULES='True' SOURCEVERSION='3.16.7-ckt11-1' TYPE='plain' UPSTREAMVERSION='3.16' VERSION='3.16'
+ binary-arch_amd64_none_real::
+ 	$(MAKE) -f debian/rules.real binary-arch-featureset ABINAME='3.16.0-4' ARCH='amd64' FEATURESET='none' KERNEL_ARCH='x86' LOCALVERSION_HEADERS='' SOURCEVERSION='3.16.7-ckt11-1' UPSTREAMVERSION='3.16' VERSION='3.16'
+ binary-arch_amd64_real::
+--- linux-source-3.16.0/debian/rules.real.org	2015-04-27 16:12:17.000000000 -0400
++++ linux-source-3.16.0/debian/rules.real	2015-07-23 21:58:04.290354770 -0400
+@@ -170,21 +170,8 @@ $(STAMPS_DIR)/build-doc: $(STAMPS_DIR)/s
+ 	@$(stamp)
+ 
+ install-base:
+-	dh_installdocs $(INSTALLDOCS_ARGS)
+-	dh_installchangelogs
+-	dh_strip
+-	dh_compress
+-	dh_fixperms
+-	dh_installdeb
+-	dh_gencontrol -- $(GENCONTROL_ARGS)
+-	dh_md5sums
+-	dh_builddeb -- -Zxz $(BUILDDEB_ARGS)
+ 
+ install-dummy:
+-	dh_testdir
+-	dh_testroot
+-	dh_prep
+-	+$(MAKE_SELF) install-base
+ 
+ install-doc: PACKAGE_NAME = linux-doc-$(VERSION)
+ install-doc: DIR = $(BUILD_DIR)/build-doc
+@@ -261,40 +248,40 @@ install-headers_$(ARCH)_$(FEATURESET)_$(
+ install-headers_$(ARCH)_$(FEATURESET)_$(FLAVOUR): DIR = $(PACKAGE_DIR)/$(BASE_DIR)
+ install-headers_$(ARCH)_$(FEATURESET)_$(FLAVOUR): $(STAMPS_DIR)/build_$(ARCH)_$(FEATURESET)_$(FLAVOUR)_$(TYPE)
+ 	dh_testdir
+-	dh_testroot
+-	dh_prep
++	fakeroot dh_testroot
++	fakeroot dh_prep
+ 
+-	mkdir -p $(DIR)/arch/$(KERNEL_ARCH)/kernel
+-	cp -a $(SOURCE_DIR)/{.config,.kernel*,Module.symvers,include} $(DIR)
+-	cp -a $(SOURCE_DIR)/arch/$(KERNEL_ARCH)/include $(DIR)/arch/$(KERNEL_ARCH)
+-	cp -a $(SOURCE_DIR)/arch/$(KERNEL_ARCH)/kernel/asm-offsets.s $(DIR)/arch/$(KERNEL_ARCH)/kernel
++	fakeroot mkdir -p $(DIR)/arch/$(KERNEL_ARCH)/kernel
++	fakeroot cp -a $(SOURCE_DIR)/{.config,.kernel*,Module.symvers,include} $(DIR)
++	fakeroot cp -a $(SOURCE_DIR)/arch/$(KERNEL_ARCH)/include $(DIR)/arch/$(KERNEL_ARCH)
++	fakeroot cp -a $(SOURCE_DIR)/arch/$(KERNEL_ARCH)/kernel/asm-offsets.s $(DIR)/arch/$(KERNEL_ARCH)/kernel
+ 
+ 	if [ -f $(SOURCE_DIR)/arch/$(KERNEL_ARCH)/lib/crtsavres.o ]; then \
+-		mkdir $(DIR)/arch/$(KERNEL_ARCH)/lib; \
+-		cp -a $(SOURCE_DIR)/arch/$(KERNEL_ARCH)/lib/crtsavres.o $(DIR)/arch/$(KERNEL_ARCH)/lib; \
++		fakeroot mkdir $(DIR)/arch/$(KERNEL_ARCH)/lib; \
++		fakeroot cp -a $(SOURCE_DIR)/arch/$(KERNEL_ARCH)/lib/crtsavres.o $(DIR)/arch/$(KERNEL_ARCH)/lib; \
+ 	fi
+ 
+-	@echo 'VERSION = 2' > $(DIR)/Makefile
+-	@echo 'PATCHLEVEL = 6' >> $(DIR)/Makefile
+-
+-	@echo 'MAKEARGS := -C $(BASE_DIR_COMMON) O=$(BASE_DIR)' >> $(DIR)/Makefile
+-	@echo 'MAKEFLAGS += --no-print-directory' >> $(DIR)/Makefile
++	@fakeroot echo 'VERSION = 2' > $(DIR)/Makefile
++	@fakeroot echo 'PATCHLEVEL = 6' >> $(DIR)/Makefile
+ 
+-	@echo '.PHONY: all $$(MAKECMDGOALS)' >> $(DIR)/Makefile
+-	@echo 'cmd := $$(filter-out all Makefile,$$(MAKECMDGOALS))' >> $(DIR)/Makefile
+-	@echo 'all:' >> $(DIR)/Makefile
+-	@echo '	@$$(MAKE) $$(MAKEARGS) $$(cmd)' >> $(DIR)/Makefile
+-	@echo 'Makefile:;' >> $(DIR)/Makefile
+-	@echo '$$(cmd) %/: all' >> $(DIR)/Makefile
+-	@echo '	@:' >> $(DIR)/Makefile
++	@fakeroot echo 'MAKEARGS := -C $(BASE_DIR_COMMON) O=$(BASE_DIR)' >> $(DIR)/Makefile
++	@fakeroot echo 'MAKEFLAGS += --no-print-directory' >> $(DIR)/Makefile
+ 
+-	dh_link /usr/lib/$(PACKAGE_NAME_KBUILD)/scripts $(BASE_DIR)/scripts
+-
+-	mkdir -p $(PACKAGE_DIR)/lib/modules/$(REAL_VERSION)
+-	ln -s /usr/src/$(PACKAGE_NAME) $(PACKAGE_DIR)/lib/modules/$(REAL_VERSION)/build
+-	ln -s /usr/src/$(PACKAGE_NAME_COMMON) $(PACKAGE_DIR)/lib/modules/$(REAL_VERSION)/source
++	@fakeroot echo '.PHONY: all $$(MAKECMDGOALS)' >> $(DIR)/Makefile
++	@fakeroot echo 'cmd := $$(filter-out all Makefile,$$(MAKECMDGOALS))' >> $(DIR)/Makefile
++	@fakeroot echo 'all:' >> $(DIR)/Makefile
++	@fakeroot echo '	@$$(MAKE) $$(MAKEARGS) $$(cmd)' >> $(DIR)/Makefile
++	@fakeroot echo 'Makefile:;' >> $(DIR)/Makefile
++	@fakeroot echo '$$(cmd) %/: all' >> $(DIR)/Makefile
++	@fakeroot echo '	@:' >> $(DIR)/Makefile
++
++	fakeroot dh_link /usr/lib/$(PACKAGE_NAME_KBUILD)/scripts $(BASE_DIR)/scripts
++
++	fakeroot mkdir -p $(PACKAGE_DIR)/lib/modules/$(REAL_VERSION)
++	fakeroot ln -s /usr/src/$(PACKAGE_NAME) $(PACKAGE_DIR)/lib/modules/$(REAL_VERSION)/build
++	fakeroot ln -s /usr/src/$(PACKAGE_NAME_COMMON) $(PACKAGE_DIR)/lib/modules/$(REAL_VERSION)/source
+ 
+-	+$(MAKE_SELF) install-base INSTALLDOCS_ARGS="--link-doc=$(PACKAGE_NAME_COMMON)"
++	+fakeroot $(MAKE_SELF) install-base INSTALLDOCS_ARGS="--link-doc=$(PACKAGE_NAME_COMMON)"
+ 
+ install-libc-dev_$(ARCH): PACKAGE_NAME = linux-libc-dev
+ install-libc-dev_$(ARCH): DH_OPTIONS = -p$(PACKAGE_NAME)
+@@ -343,32 +330,32 @@ install-image_$(ARCH)_$(FEATURESET)_$(FL
+ 
+ install-image_$(ARCH)_$(FEATURESET)_$(FLAVOUR)_plain:
+ 	dh_testdir
+-	dh_testroot
+-	dh_prep
+-	dh_installdirs 'boot'
+-	install -m644 '$(DIR)/$(IMAGE_FILE)' $(INSTALL_DIR)/$(IMAGE_INSTALL_STEM)-$(REAL_VERSION)
+-	+$(MAKE_SELF) \
++	fakeroot dh_testroot
++	fakeroot dh_prep
++	fakeroot dh_installdirs 'boot'
++	fakeroot install -m644 '$(DIR)/$(IMAGE_FILE)' $(INSTALL_DIR)/$(IMAGE_INSTALL_STEM)-$(REAL_VERSION)
++	+fakeroot $(MAKE_SELF) \
+ 	  install-image_$(ARCH)_$(FEATURESET)_$(FLAVOUR)_plain_dt \
+ 	  DIR='$(DIR)' PACKAGE_DIR='$(PACKAGE_DIR)' REAL_VERSION='$(REAL_VERSION)'
+ ifeq ($(MODULES),True)
+-	+$(MAKE_CLEAN) -C $(DIR) modules_install DEPMOD='$(CURDIR)/debian/bin/no-depmod' INSTALL_MOD_PATH='$(CURDIR)'/$(PACKAGE_DIR) INSTALL_MOD_STRIP=1
++	+fakeroot $(MAKE_CLEAN) -C $(DIR) modules_install DEPMOD='$(CURDIR)/debian/bin/no-depmod' INSTALL_MOD_PATH='$(CURDIR)'/$(PACKAGE_DIR) INSTALL_MOD_STRIP=1
+ ifeq ($(DEBUG),True)
+-	set -o pipefail; \
+-	find $(PACKAGE_DIR) -name '*.ko' | sed 's|$(PACKAGE_DIR)/lib/modules/$(REAL_VERSION)/kernel/||' | while read module ; do \
+-	  $(CROSS_COMPILE)objcopy --add-gnu-debuglink=$(DIR)/$$module $(PACKAGE_DIR)/lib/modules/$(REAL_VERSION)/kernel/$$module || exit; \
++	fakeroot set -o pipefail; \
++	fakeroot find $(PACKAGE_DIR) -name '*.ko' | sed 's|$(PACKAGE_DIR)/lib/modules/$(REAL_VERSION)/kernel/||' | while read module ; do \
++	fakeroot $(CROSS_COMPILE)objcopy --add-gnu-debuglink=$(DIR)/$$module $(PACKAGE_DIR)/lib/modules/$(REAL_VERSION)/kernel/$$module || exit; \
+ 	done
+ endif
+-	cp $(DIR)/.config $(PACKAGE_DIR)/boot/config-$(REAL_VERSION)
+-	cp $(DIR)/System.map $(PACKAGE_DIR)/boot/System.map-$(REAL_VERSION)
+-	rm -f $(PACKAGE_DIR)/lib/modules/$(REAL_VERSION)/build
+-	rm -f $(PACKAGE_DIR)/lib/modules/$(REAL_VERSION)/source
+-	rm $(PACKAGE_DIR)/lib/firmware -rf
++	fakeroot cp $(DIR)/.config $(PACKAGE_DIR)/boot/config-$(REAL_VERSION)
++	fakeroot cp $(DIR)/System.map $(PACKAGE_DIR)/boot/System.map-$(REAL_VERSION)
++	fakeroot rm -f $(PACKAGE_DIR)/lib/modules/$(REAL_VERSION)/build
++	fakeroot rm -f $(PACKAGE_DIR)/lib/modules/$(REAL_VERSION)/source
++	fakeroot rm $(PACKAGE_DIR)/lib/firmware -rf
+ endif
+-	dh_installdebconf
+-	+$(MAKE_SELF) \
++	fakeroot dh_installdebconf
++	+fakeroot $(MAKE_SELF) \
+ 	  install-image_$(ARCH)_$(FEATURESET)_$(FLAVOUR)_plain_bug \
+ 	  PACKAGE_DIR='$(PACKAGE_DIR)' PACKAGE_NAME='$(PACKAGE_NAME)' REAL_VERSION='$(REAL_VERSION)'
+-	+$(MAKE_SELF) install-base GENCONTROL_ARGS='-Vkernel:Recommends='"$$( \
++	+fakeroot $(MAKE_SELF) install-base GENCONTROL_ARGS='-Vkernel:Recommends='"$$( \
+ 		if grep -q '^CONFIG_SMP=y' $(DIR)/.config; then \
+ 			printf irqbalance,; \
+ 		fi)"
+@@ -402,15 +389,15 @@ install-image-dbg_$(ARCH)_$(FEATURESET)_
+ install-image-dbg_$(ARCH)_$(FEATURESET)_$(FLAVOUR): DH_OPTIONS = -p$(PACKAGE_NAME)
+ install-image-dbg_$(ARCH)_$(FEATURESET)_$(FLAVOUR): $(STAMPS_DIR)/build_$(ARCH)_$(FEATURESET)_$(FLAVOUR)_$(TYPE)
+ 	dh_testdir
+-	dh_testroot
+-	dh_prep
+-	dh_installdirs usr/lib/debug usr/lib/debug/boot usr/share/lintian/overrides/
+-	dh_lintian
+-	install -m644 $(DIR)/vmlinux $(DEBUG_DIR)/boot/vmlinux-$(REAL_VERSION)
++	fakeroot dh_testroot
++	fakeroot dh_prep
++	fakeroot dh_installdirs usr/lib/debug usr/lib/debug/boot usr/share/lintian/overrides/
++	fakeroot dh_lintian
++	fakeroot install -m644 $(DIR)/vmlinux $(DEBUG_DIR)/boot/vmlinux-$(REAL_VERSION)
+ ifeq ($(MODULES),True)
+-	+$(MAKE_CLEAN) -C $(DIR) modules_install DEPMOD='$(CURDIR)/debian/bin/no-depmod' INSTALL_MOD_PATH='$(CURDIR)'/$(DEBUG_DIR)
+-	find $(DEBUG_DIR)/lib/modules/$(REAL_VERSION)/ -mindepth 1 -maxdepth 1 \! -name kernel -exec rm {} \+
+-	rm $(DEBUG_DIR)/lib/firmware -rf
++	+fakeroot $(MAKE_CLEAN) -C $(DIR) modules_install DEPMOD='$(CURDIR)/debian/bin/no-depmod' INSTALL_MOD_PATH='$(CURDIR)'/$(DEBUG_DIR)
++	fakeroot find $(DEBUG_DIR)/lib/modules/$(REAL_VERSION)/ -mindepth 1 -maxdepth 1 \! -name kernel -exec rm {} \+
++	fakeroot rm $(DEBUG_DIR)/lib/firmware -rf
+ endif
+ # Add symlinks to vmlinux from the locations expected by kdump-tools,
+ # systemtap and others
