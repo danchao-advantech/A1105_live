@@ -196,7 +196,6 @@ make all
 	> ~ 30 min
 make imgclean
 make image
-	> ~ 10 min
 ```
 
 
