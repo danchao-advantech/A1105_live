@@ -9,7 +9,7 @@ Please refer to [ESP-9010 Debian Live System Building Environment Guide v0.1.pdf
 ### Prerequisites
 
 * [ESP-9010 Debian Live System Building Environment Guide v0.1.pdf](https://github.com/danchao-advantech/A1105_live/blob/master/ESP-9010%20Debian%20Live%20System%20Building%20Environment%20Guide%20v0.1.pdf) (Abbreviations: "*9010-live-UG*")
-* esp-9010_lmp_esw_v00_06 directory (git clone https://github.com/danchao-advantech/A1105_live)
+* **esp-9010_lmp_esw_v00_06** directory (git clone https://github.com/danchao-advantech/A1105_live)
 * [install_D8.sh](https://github.com/danchao-advantech/A1105_live/blob/master/install_D8.sh)
 
 
@@ -21,7 +21,7 @@ Please refer to [ESP-9010 Debian Live System Building Environment Guide v0.1.pdf
 
 ### Installing
 
-Please install Debian 8.1 amd64 standard in server (image: [debian-live-8.1.0-amd64-standard.iso](http://cdimage.debian.org/mirror/cdimage/archive/8.1.0-live/amd64/iso-hybrid/debian-live-8.1.0-amd64-standard.iso)) that is 
+Please install **Debian 8.1 amd64 standard** in server (image: [debian-live-8.1.0-amd64-standard.iso](http://cdimage.debian.org/mirror/cdimage/archive/8.1.0-live/amd64/iso-hybrid/debian-live-8.1.0-amd64-standard.iso)) that is 
 a suitable platform for A1105 live build.  Internet network access is necessary too. 
 
 
@@ -91,14 +91,20 @@ Get 9010 image source from GitHub, move/rename "*esp-9010_lmp_esw_v00_06*" direc
 cd $HOME
 git clone https://github.com/danchao-advantech/A1105_live
 mkdir -p $HOME/live-image
-mv $HOME/A1105_live/esp-9010_lmp_esw_v00_06 $HOME/live-image/esp-9010
+cp -rf $HOME/A1105_live/esp-9010_lmp_esw_v00_06 $HOME/live-image/esp-9010
 cd $HOME/live-image/esp-9010
 ls
-	> auto    linux-source-3.16.0.tar.bz2.partaa  Makefile          src
-	> config  linux-source-3.16.0.tar.bz2.partab  persistence.conf  version
+	> auto                       live-cache.tar.bz2.partad  persistence.conf
+	> config                     live-cache.tar.bz2.partae  src
+	> live-cache.tar.bz2.partaa  live-cache.tar.bz2.partaf  version
+	> live-cache.tar.bz2.partab  live-cache.tar.bz2.partag
+	> live-cache.tar.bz2.partac  Makefile
+cat live-cache.tar.bz2.part* > live-cache.tar.bz2
+rm live-cache.tar.bz2.parta*
+cd $HOME/live-image/esp-9010/src/linux-kernel
 cat linux-source-3.16.0.tar.bz2.part* > linux-source-3.16.0.tar.bz2
-mv linux-source-3.16.0.tar.bz2 src/linux-kernel
 rm linux-source-3.16.0.tar.bz2.part*
+cd $HOME/live-image/esp-9010
 ```
 
 
